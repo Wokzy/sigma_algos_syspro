@@ -131,11 +131,13 @@ public:
 		while (digits.size() < other.digits.size())
 			digits.push_back(0);
 
-		for (ssize_t i = 0; i < other.digits.size(); i++) {
-			digits[i] += other.digits[i];
-		}
+		ssize_t lim = other.digits.size();
+		if (digits.size() > lim)
+			lim = digits.size();
 
-		for (ssize_t i = 0; i < digits.size(); i++) {
+		for (ssize_t i = 0; i < lim; i++) {
+			if (i < other.digits.size())
+				digits[i] += other.digits[i];
 			if (digits[i] >= BASE) {
 				if (i == digits.size() - 1)
 					digits.push_back(0);
@@ -143,6 +145,7 @@ public:
 				digits[i + 1]++;
 			}
 		}
+
 		recalc_msd();
 		return *this;
 	}
@@ -151,16 +154,19 @@ public:
 			*this = 0;
 			return *this;
 		}
-		for (ssize_t i = 0; i <= other.msd; i++) {
-			digits[i] -= other.digits[i];
-		}
+		ssize_t lim = other.msd;
+		if (msd > lim)
+			lim = msd;
 
 		for (ssize_t i = 0; i <= msd; i++) {
+			if (i <= other.msd)
+				digits[i] -= other.digits[i];
 			if (digits[i] < 0) {
 				digits[i] += BASE;
 				digits[i + 1]--;
 			}
 		}
+
 		recalc_msd();
 		return *this;
 	}

@@ -15,8 +15,8 @@ using namespace std;
 делает операции удаления первого элемента с начала, что имеет линейную сложность,
 однако, если принебречь этим, и положить, что удаление самой "правой" цифры числа
 происходит за константу, то алгоритм делает N сдвигов, на каждом из
-которых происходит вычитание, работающее за (M + N), поэтому в среднем и худшем
-случаях алгоритм работает за O(N*(N + M)), а в лучшем случае
+которых происходит вычитание, работающее за max(M, N), поэтому в среднем и худшем
+случаях алгоритм работает за O(N*max(N, M)), а в лучшем случае
 (числа равны или делитель больше делимого) за O(N) (сравнение 2х чисел)
 
 Вместо std::vector можно было бы использовать std::list (двусвязный список),
@@ -131,11 +131,13 @@ public:
 		while (digits.size() < other.digits.size())
 			digits.push_back(0);
 
-		for (ssize_t i = 0; i < other.digits.size(); i++) {
-			digits[i] += other.digits[i];
-		}
+		ssize_t lim = other.digits.size();
+		if (digits.size() > lim)
+			lim = digits.size();
 
-		for (ssize_t i = 0; i < digits.size(); i++) {
+		for (ssize_t i = 0; i < lim; i++) {
+			if (i < other.digits.size())
+				digits[i] += other.digits[i];
 			if (digits[i] >= BASE) {
 				if (i == digits.size() - 1)
 					digits.push_back(0);
@@ -143,6 +145,7 @@ public:
 				digits[i + 1]++;
 			}
 		}
+
 		recalc_msd();
 		return *this;
 	}
@@ -151,16 +154,19 @@ public:
 			*this = 0;
 			return *this;
 		}
-		for (ssize_t i = 0; i <= other.msd; i++) {
-			digits[i] -= other.digits[i];
-		}
+		ssize_t lim = other.msd;
+		if (msd > lim)
+			lim = msd;
 
 		for (ssize_t i = 0; i <= msd; i++) {
+			if (i <= other.msd)
+				digits[i] -= other.digits[i];
 			if (digits[i] < 0) {
 				digits[i] += BASE;
 				digits[i + 1]--;
 			}
 		}
+
 		recalc_msd();
 		return *this;
 	}
