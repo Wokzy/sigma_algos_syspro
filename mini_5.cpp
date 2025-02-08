@@ -2,10 +2,25 @@
 
 using namespace std;
 
+void shell_sort(vector<int>& data) {
+	vector<int> seq = {1, 4, 10, 23, 57, 132, 301, 701};
+	reverse(seq.begin(), seq.end());
+
+	for (int& s : seq) {
+		for (int i = s; i < data.size(); i++) {
+			for (int j = i - s; j >= 0 && data[j] > data[j + s]; j -= s) {
+				int temp = data[j];
+				data[j] = data[j + s];
+				data[j + s] = temp;
+			}
+		}
+	}
+}
+
 class Solution {
 public:
 	void wiggleSort(vector<int>& nums) {
-		sort(nums.begin(), nums.end());
+		shell_sort(nums);
 
 		vector<int> res(nums.size(), 0);
 		for (int i = 0; i < nums.size(); i++) {
