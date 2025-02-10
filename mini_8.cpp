@@ -1,4 +1,4 @@
-#include <iostream>
+#include <fstream>
 #include <vector>
 
 using namespace std;
@@ -158,19 +158,40 @@ vector<vector<int>> shtrassen(vector<vector<int>>& x, vector<vector<int>>& y) {
 
 signed main(void) {
 
-	int n = 2;
+	ifstream input;
+	ofstream out;
 
-	vector<vector<int>> a = {{1, 2, 3, 4}, {5, 6, 7, 8}, {1, 2, 3, 4}, {5, 6, 7, 8}};
-	vector<vector<int>> b = {{1, 2, 3, 4}, {10, 10, 2341, 1}, {1, 0, 0, 4}, {9, 9, 7, 8}};
-	vector<vector<int>> res = shtrassen(b, a);
+	input.open("input.txt");
+	out.open("output.txt", ios::trunc);
+
+	int n;
+	input >> n;
+
+	vector<vector<int>> a(n, vector<int>(n, 0)), b(n, vector<int>(n, 0));
+
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < n; j++)
+			input >> a[i][j];
+
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < n; j++)
+			input >> b[i][j];
+
+	#ifdef SHTRASSEN
+	vector<vector<int>> res = shtrassen(a, b);
+	#else
+	vector<vector<int>> res = simple_mul(a, b);
+	#endif
 
 	for (int i = 0; i < res.size(); i++) {
-		cout << res[i][0];
+		out << res[i][0];
 		for (int j = 1; j < res.size(); j++)
-			cout << ' ' << res[i][j];
-		cout << '\n';
+			out << ' ' << res[i][j];
+		out << '\n';
 	}
-	cout << '\n';
+
+	input.close();
+	out.close();
 
 	return 0;
 }
