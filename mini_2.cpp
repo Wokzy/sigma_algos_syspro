@@ -336,10 +336,14 @@ int main(void)
 	uintbig_t test2_b = 5678;
 	cout << test2_a << " * " << test2_b << " = " << (test2_a * test2_b) << endl;
 
+	uintbig_t test3_a = (string)"123425986347856384657863";
+	uintbig_t test3_b = (string)"1125678";
+	cout << test3_a << " * " << test3_b << " = " << (test3_a * test3_b) << endl;
+
 	cout << "Now enter 2 numbers manually:\n";
 	uintbig_t a, b;
 	cin >> a >> b;
-	cout << (a *= b) << '\n';
+	cout << (a * b) << '\n';
 
 	return 0;
 }

@@ -28,5 +28,6 @@ mini_7 : mini_7.cpp
 	$(cxx) $^ $(cflags) -o $@
 
 mini_8 : mini_8.cpp
+	$(cxx) $^ $(cflags) -o mini_8
 	$(cxx) $^ $(cflags) -o mini_8_basic
 	$(cxx) $^ $(cflags) -D SHTRASSEN -o mini_8_shtrassen

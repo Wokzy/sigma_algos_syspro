@@ -44,7 +44,7 @@ public:
 	// template<typename Type>
 	// uintbig_t(Type n);
 	uintbig_t() {
-		digits = vector<int32_t>(1, 0);
+		digits = {0};
 	}
 	uintbig_t(string n) {
 		digits = vector<int32_t>(n.size(), 0);
@@ -58,7 +58,7 @@ public:
 		}
 	}
 	uintbig_t(int a) {
-		digits = vector<int32_t>(1, a % 10);
+		digits = {a % 10};
 		a /= 10;
 		while (a) {
 			msd++;
@@ -76,20 +76,6 @@ public:
 
 		return true;
 	}
-	bool operator>=(const uintbig_t &n) const {
-		if (msd > n.msd)
-			return true;
-		else if (msd < n.msd)
-			return false;
-
-		for (ssize_t i = msd; i >= 0; i--) {
-			if (digits[i] > n.digits[i])
-				return true;
-			if (digits[i] < n.digits[i])
-				return false;
-		}
-		return true;
-	}
 	bool operator>(const uintbig_t &n) const {
 		if (msd > n.msd)
 			return true;
@@ -103,6 +89,9 @@ public:
 				return false;
 		}
 		return false;
+	}
+	bool operator>=(const uintbig_t &n) const {
+		return (*this == n) || (*this > n);
 	}
 	bool operator<(const uintbig_t &n) const {
 		return n > *this;
