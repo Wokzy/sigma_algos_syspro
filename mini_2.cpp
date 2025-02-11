@@ -76,20 +76,6 @@ public:
 	bool operator!=(const uintbig_t &n) const {
 		return !(*this == n);
 	}
-	bool operator>=(const uintbig_t &n) const {
-		if (msd > n.msd)
-			return true;
-		else if (msd < n.msd)
-			return false;
-
-		for (ssize_t i = msd; i >= 0; i--) {
-			if (digits[i] > n.digits[i])
-				return true;
-			if (digits[i] < n.digits[i])
-				return false;
-		}
-		return true;
-	}
 	bool operator>(const uintbig_t &n) const {
 		if (msd > n.msd)
 			return true;
@@ -103,6 +89,9 @@ public:
 				return false;
 		}
 		return false;
+	}
+	bool operator>=(const uintbig_t &n) const {
+		return (*this == n) || (*this > n);
 	}
 	bool operator<(const uintbig_t &n) const {
 		return n > *this;
