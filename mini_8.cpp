@@ -98,16 +98,16 @@ vector<vector<int>> shtrassen(vector<vector<int>>& x, vector<vector<int>>& y) {
 		}
 	}
 
-	vector<vector<int>> f_h(half, vector<int>(n, 0));
-	vector<vector<int>> a_b(half, vector<int>(n, 0));
-	vector<vector<int>> c_d(half, vector<int>(n, 0));
-	vector<vector<int>> g_e(half, vector<int>(n, 0));
-	vector<vector<int>> a_d(half, vector<int>(n, 0));
-	vector<vector<int>> e_h(half, vector<int>(n, 0));
-	vector<vector<int>> b_d(half, vector<int>(n, 0));
-	vector<vector<int>> g_h(half, vector<int>(n, 0));
-	vector<vector<int>> a_c(half, vector<int>(n, 0));
-	vector<vector<int>> e_f(half, vector<int>(n, 0));
+	vector<vector<int>> f_h(half, vector<int>(half, 0));
+	vector<vector<int>> a_b(half, vector<int>(half, 0));
+	vector<vector<int>> c_d(half, vector<int>(half, 0));
+	vector<vector<int>> g_e(half, vector<int>(half, 0));
+	vector<vector<int>> a_d(half, vector<int>(half, 0));
+	vector<vector<int>> e_h(half, vector<int>(half, 0));
+	vector<vector<int>> b_d(half, vector<int>(half, 0));
+	vector<vector<int>> g_h(half, vector<int>(half, 0));
+	vector<vector<int>> a_c(half, vector<int>(half, 0));
+	vector<vector<int>> e_f(half, vector<int>(half, 0));
 
 	for (int i = 0; i < half; i++) {
 		for (int j = 0; j < half; j++) {
