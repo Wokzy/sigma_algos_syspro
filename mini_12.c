@@ -78,7 +78,7 @@ void quick_sort_lomuto_advanced(int *first, int *last) {
 		return;
 
 	int *pivot = lomuto_partition_branchfree(first, last);
-	quick_sort_lomuto_advanced(first, pivot + 1);
+	quick_sort_lomuto_advanced(first, pivot);
 	quick_sort_lomuto_advanced(pivot + 1, last);
 }
 
