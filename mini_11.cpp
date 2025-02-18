@@ -23,7 +23,7 @@ void print_arr(vector<T> arr, int l, int r) {
 	cout << '\n';
 }
 
-void quick_sort_simple(vector<int> &arr, int l, int r) {
+void quick_sort_lomuto_simple(vector<int> &arr, int l, int r) {
 	if (r - l <= 1)
 		return;
 
@@ -45,8 +45,8 @@ void quick_sort_simple(vector<int> &arr, int l, int r) {
 		}
 	}
 
-	quick_sort_simple(arr, l, i + l + 1);
-	quick_sort_simple(arr, k + l + 1, r);
+	quick_sort_lomuto_simple(arr, l, i + l + 1);
+	quick_sort_lomuto_simple(arr, k + l + 1, r);
 }
 
 void quick_sort_mem(vector<int> &arr) {
@@ -80,7 +80,46 @@ void quick_sort_mem(vector<int> &arr) {
 		arr[i++] = c;
 }
 
-void quick_sort_advanced(vector<int> &arr, int l, int r) {
+int lomuto_partition_advanced(vector<int> &arr, int l, int r) {
+	if (r - l < 2)
+		return l;
+
+	r--;
+	if (arr[l] > arr[r])
+		swap(arr[l], arr[r]);
+
+	int pivot_pos = l;
+	int pivot = arr[l];
+
+	do {
+		l++;
+	} while (arr[l] < pivot);
+
+	for (int i = l + 1; i < r; i++) {
+		int x = arr[i];
+		int smaller = - (int)(x < pivot);
+		int delta = smaller & (i - l);
+		arr[l + delta] = arr[l];
+		arr[i - delta] = x;
+		l -= smaller;
+	}
+
+	--l;
+	arr[pivot_pos] = arr[l];
+	arr[l] = pivot;
+	return l;
+}
+
+void quick_sort_lomuto_advanced(vector<int> &arr, int l, int r) {
+	if (r - l < 2)
+		return;
+
+	int pivot = lomuto_partition_advanced(arr, l, r);
+	quick_sort_lomuto_advanced(arr, l, pivot);
+	quick_sort_lomuto_advanced(arr, pivot + 1, r);
+}
+
+void quick_sort_hoare(vector<int> &arr, int l, int r) {
 	if (r <= l)
 		return;
 
@@ -98,30 +137,35 @@ void quick_sort_advanced(vector<int> &arr, int l, int r) {
 		swap(arr[i++], arr[j--]);
 	}
 
-	quick_sort_advanced(arr, l, j);
-	quick_sort_advanced(arr, j + 1, r);
+	quick_sort_hoare(arr, l, j);
+	quick_sort_hoare(arr, j + 1, r);
 }
 
 
 signed main(void) {
-	// vector<int> test = {2, 5, 3, 1};
+	// vector<int> test = {-4,0,7,4,9,-5,-1,0,-7,-1};
 	// vector<int> test = {2, 5, 3, 1, -10, 7, 143, 32817, -123};
 	vector<int> test1 = {4, 9, 7, 8, 8, 3, 33, -10, 8, 8, 8, 2, 12};
 	vector<int> test2 = {4, 9, 7, 8, 8, 3, 33, -10, 8, 8, 8, 2, 12};
 	vector<int> test3 = {4, 9, 7, 8, 8, 3, 33, -10, 8, 8, 8, 2, 12};
+	vector<int> test4 = {4, 9, 7, 8, 8, 3, 33, -10, 8, 8, 8, 2, 12};
 
 	cout << "Initial\n";
 	print_arr(test1);
 
-	cout << "Lomuto's\n";
-	quick_sort_simple(test1, 0, test1.size());
+	cout << "Lomuto's\n"; // TLE on {110, 100, 0} leetcode bug??
+	quick_sort_lomuto_simple(test1, 0, test1.size());
 	print_arr(test1);
 
-	cout << "Hoare's\n";
-	quick_sort_advanced(test2, 0, test2.size() - 1);
+	cout << "Lomuto's advanced\n";
+	quick_sort_lomuto_advanced(test4, 0, test4.size());
+	print_arr(test4);
+
+	cout << "Hoare's\n"; // https://leetcode.com/problems/sort-an-array/submissions/1546457206
+	quick_sort_hoare(test2, 0, test2.size() - 1);
 	print_arr(test2);
 
-	cout << "Memory\n";
+	cout << "Memory\n"; // https://leetcode.com/problems/sort-an-array/submissions/1547181830
 	quick_sort_mem(test3);
 	print_arr(test3);
 	return 0;
