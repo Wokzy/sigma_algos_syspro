@@ -49,6 +49,37 @@ void quick_sort_simple(vector<int> &arr, int l, int r) {
 	quick_sort_simple(arr, k + l + 1, r);
 }
 
+void quick_sort_mem(vector<int> &arr) {
+	if (arr.size() <= 1)
+		return;
+
+	int value = arr[abs(arr[0]) % arr.size()];
+
+	vector<int> less;
+	vector<int> equal;
+	vector<int> greater;
+
+	for (int &c : arr) {
+		if (c < value)
+			less.push_back(c);
+		else if (c == value)
+			equal.push_back(c);
+		else
+			greater.push_back(c);
+	}
+
+	quick_sort_mem(less);
+	quick_sort_mem(greater);
+
+	int i = 0;
+	for (int &c : less)
+		arr[i++] = c;
+	for (int &c : equal)
+		arr[i++] = c;
+	for (int &c : greater)
+		arr[i++] = c;
+}
+
 void quick_sort_advanced(vector<int> &arr, int l, int r) {
 	if (r <= l)
 		return;
@@ -77,6 +108,7 @@ signed main(void) {
 	// vector<int> test = {2, 5, 3, 1, -10, 7, 143, 32817, -123};
 	vector<int> test1 = {4, 9, 7, 8, 8, 3, 33, -10, 8, 8, 8, 2, 12};
 	vector<int> test2 = {4, 9, 7, 8, 8, 3, 33, -10, 8, 8, 8, 2, 12};
+	vector<int> test3 = {4, 9, 7, 8, 8, 3, 33, -10, 8, 8, 8, 2, 12};
 
 	cout << "Initial\n";
 	print_arr(test1);
@@ -88,5 +120,9 @@ signed main(void) {
 	cout << "Hoare's\n";
 	quick_sort_advanced(test2, 0, test2.size() - 1);
 	print_arr(test2);
+
+	cout << "Memory\n";
+	quick_sort_mem(test3);
+	print_arr(test3);
 	return 0;
 }
