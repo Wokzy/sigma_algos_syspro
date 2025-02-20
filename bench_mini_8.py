@@ -29,6 +29,7 @@ def run_test(n, x, y, exec_name) -> tuple[float, float, float]:
 		end_time = datetime.datetime.now()
 		results.append((end_time - start_time).total_seconds())
 
+	# print(results)
 	smean = sum(results) / SINGLE_TEST_ATTEMPTS
 	dev = math.sqrt(sum([(r - smean)**2 for r in results]) / SINGLE_TEST_ATTEMPTS) # standart diviation
 	gmean = 1
@@ -36,7 +37,7 @@ def run_test(n, x, y, exec_name) -> tuple[float, float, float]:
 		gmean *= r
 	gmean = gmean**(1 / SINGLE_TEST_ATTEMPTS)
 
-	return (smean, gmean, dev)
+	return (smean.real, gmean.real, dev)
 
 def gen_random_matrix(n: int):
 	return [[random.randint(1, 10) for j in range(n)] for i in range(n)]

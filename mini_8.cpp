@@ -73,6 +73,9 @@ vector<vector<int>> shtrassen(vector<vector<int>>& x, vector<vector<int>>& y) {
 	int half = (n >> 1);
 	if (n == 1)
 		return {{x[0][0] * y[0][0]}};
+	else if (n <= 8) {
+		return simple_mul(x, y);
+	}
 
 	vector<vector<int>> a(half, vector<int>(half, 0)), b(half, vector<int>(half, 0)), c(half, vector<int>(half, 0)), d(half, vector<int>(half, 0)), e(half, vector<int>(half, 0)), f(half, vector<int>(half, 0)), g(half, vector<int>(half, 0)), h(half, vector<int>(half, 0));
 
