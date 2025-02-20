@@ -56,6 +56,31 @@ public:
 };
 
 
+class SolutionSimpleV2 {
+public:
+	bool isIdealPermutation(vector<int>& nums) {
+		if (nums.size() <= 2)
+			return true;
+
+		int n = nums.size();
+		vector<int> pref_max(n, nums[0]);
+
+		if (nums[1] > nums[0])
+			pref_max[1] = nums[1];
+
+		for (int i = 2; i < n; i++) {
+			if (pref_max[i - 2] > nums[i])
+				return false;
+			pref_max[i] = pref_max[i - 1];
+			if (nums[i] > pref_max[i])
+				pref_max[i] = nums[i];
+		}
+
+		return true;
+	}
+};
+
+
 class SolutionMerge {
 	public:
 	int merge_count(vector<int>& nums) {
@@ -121,7 +146,7 @@ class SolutionMerge {
 
 signed main(void) {
 	vector<int> data = {1,0,2};
-	SolutionMerge sol;
+	SolutionSimpleV2 sol;
 
 	cout << sol.isIdealPermutation(data) << '\n';
 	return 0;
