@@ -1,8 +1,8 @@
 
 import os
 import math
+import time
 import random
-import datetime
 
 from format_table import format_table
 
@@ -24,12 +24,10 @@ def run_test(n, x, y, exec_name) -> tuple[float, float, float]:
 	results = []
 
 	for i in range(SINGLE_TEST_ATTEMPTS):
-		start_time = datetime.datetime.now()
+		start_time = time.time()
 		os.system(exec_name)
-		end_time = datetime.datetime.now()
-		results.append((end_time - start_time).total_seconds())
+		results.append(time.time() - start_time)
 
-	# print(results)
 	smean = sum(results) / SINGLE_TEST_ATTEMPTS
 	dev = math.sqrt(sum([(r - smean)**2 for r in results]) / SINGLE_TEST_ATTEMPTS) # standart diviation
 	gmean = 1
@@ -44,8 +42,6 @@ def gen_random_matrix(n: int):
 
 
 def main():
-	# print(b @ a)
-
 	results = []
 
 	for i in range(1, MAX_LOGN + 1):
