@@ -4,6 +4,8 @@ using namespace std;
 
 #define int long long
 
+// C = A + B*N
+
 void merge_sort(vector<int>& nums, int l, int r) {
 	if (l == r)
 		return;

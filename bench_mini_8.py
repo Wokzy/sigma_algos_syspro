@@ -9,7 +9,7 @@ from format_table import format_table
 
 MAX_LOGN = 8
 
-SINGLE_TEST_ATTEMPTS = 8
+SINGLE_TEST_ATTEMPTS = 6
 BASIC_EXEC_NAME = './mini_8_basic'
 SHTRASSEN_EXEC_NAME = './mini_8_shtrassen'
 

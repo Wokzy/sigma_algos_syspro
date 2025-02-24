@@ -43,11 +43,9 @@ public:
 	vector<int32_t> digits;
 	// template<typename Type>
 	// uintbig_t(Type n);
-	uintbig_t() {
-		digits = {0};
+	uintbig_t(): digits(1, 0) {
 	}
-	uintbig_t(string n) {
-		digits = vector<int32_t>(n.size(), 0);
+	uintbig_t(string n): digits(n.size(), 0) {
 		bool flag = true;
 		for (int i = 0; i < n.size(); i++) {
 			if (flag && n[i] != '0') {
@@ -57,8 +55,7 @@ public:
 			digits[n.size() - i - 1] = n[i] - '0';
 		}
 	}
-	uintbig_t(int a) {
-		digits = {a % 10};
+	uintbig_t(int a): digits(1, a % 10) {
 		a /= 10;
 		while (a) {
 			msd++;

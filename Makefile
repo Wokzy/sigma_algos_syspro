@@ -6,7 +6,7 @@ cflags = -std=c99 -O3 -fno-stack-limit
 cxxflags = -std=c++20 -O2 -fno-stack-limit -I$(include_dir)#-lpthread -mavx512f
 # ldflags = -lm -lc# -lcrypto -lssl
 
-all: mini_1 mini_2 mini_3 mini_4 mini_5 mini_6 mini_7 mini_8 mini_9 mini_10 mini_11 mini_12
+all: mini_1 mini_2 mini_3 mini_4 mini_5 mini_6 mini_7 mini_8 mini_9 mini_10 mini_11 mini_12 mini_13 mini_14 mini_15
 
 mini_1 : mini_1.cpp
 	$(cxx) $^ $(cxxflags) -o $@
@@ -45,3 +45,12 @@ mini_11 : mini_11.cpp
 
 mini_12 : mini_12.c
 	$(cc) $^ $(cflags) -o $@
+
+mini_13 : mini_13.cpp
+	$(cxx) $^ $(cxxflags) -o $@
+
+mini_14 : mini_14.cpp
+	$(cxx) $^ $(cxxflags) -o $@
+
+mini_15 : mini_15.cpp
+	$(cxx) $^ $(cxxflags) -o $@
