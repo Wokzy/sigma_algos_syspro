@@ -1,20 +1,7 @@
-#include <iostream>
+#pragma once
 #include <vector>
-#include <functional>
 
 using namespace std;
-
-struct ListNode {
-	int val;
-	ListNode *next;
-	ListNode() : val(0), next(nullptr) {}
-	ListNode(int x) : val(x), next(nullptr) {}
-	ListNode(int x, ListNode *next) : val(x), next(next) {}
-};
-
-bool comparator(ListNode *a, ListNode *b) {
-	return a->val <= b->val;
-}
 
 template<typename T>
 void siftdown(vector<T> &heap, int start_pos, int pos, bool (*cmp)(T, T)) {
@@ -81,35 +68,4 @@ template<typename T>
 void heappush(vector<T> &heap, T item, bool (*cmp)(T, T)) {
 	heap.push_back(item);
 	siftdown(heap, 0, heap.size() - 1, cmp);
-}
-
-class Solution {
-public:
-	ListNode* mergeKLists(vector<ListNode*>& lists) {
-		if (lists.empty())
-			return nullptr;
-
-		vector<ListNode*> pq;
-		ListNode *start = new ListNode;
-		ListNode *cur = start;
-
-		for (int i = 0; i < lists.size(); i++)
-			if (lists[i] != nullptr)
-				heappush(pq, lists[i], comparator);
-
-		while (!pq.empty()) {
-			ListNode* mn = heappop(pq, comparator);
-			cur->next = mn;
-			cur = cur->next;
-			if (mn->next != nullptr) {
-				heappush(pq, mn->next, comparator);
-			}
-		}
-
-		return start->next;
-	}
-};
-
-int main(void) {
-	return 0;
 }

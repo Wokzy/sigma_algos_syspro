@@ -8,19 +8,19 @@ using namespace std;
 
 #define is_digit(c) (c >= '0' && c <= '9')
 
-vector<string> split(string s, const string &delimiter) {
-	vector<string> tokens;
-	size_t pos = 0;
-	string token;
-	while ((pos = s.find(delimiter)) != string::npos) {
-		token = s.substr(0, pos);
-		tokens.push_back(token);
-		s.erase(0, pos + delimiter.length());
-	}
-	tokens.push_back(s);
+// vector<string> split(string s, const string &delimiter) {
+// 	vector<string> tokens;
+// 	size_t pos = 0;
+// 	string token;
+// 	while ((pos = s.find(delimiter)) != string::npos) {
+// 		token = s.substr(0, pos);
+// 		tokens.push_back(token);
+// 		s.erase(0, pos + delimiter.length());
+// 	}
+// 	tokens.push_back(s);
 
-	return tokens;
-}
+// 	return tokens;
+// }
 
 
 unordered_map<string, int> operator_precedence = {
@@ -41,6 +41,42 @@ unordered_map<string, int> operator_precedence = {
 
 unordered_set<string> right_assosiative = {"**"};
 
+vector<string> tokenize(string &input) {
+
+	vector<string> res;
+
+	string token;
+	for (int i = 0; i < input.size(); i++) {
+		if (input[i] == ' ') {
+			if (token.size()) {
+				res.push_back(token);
+				token = "";
+			}
+		} else if (is_digit(input[i])) {
+			token += input[i];
+		} else if (input[i] == '(' || input[i] == ')') {
+			if (token.size()){
+				res.push_back(token);
+				token = "";
+			}
+			token += input[i];
+			res.push_back(token);
+			token = "";
+		} else {
+			token += input[i];
+			if (input[i] == input[i + 1]) {
+				token += input[i];
+				i++;
+			}
+		}
+	}
+
+	if (token.size())
+		res.push_back(token);
+
+	return res;
+}
+
 string infix_to_postfix(string &input) {
 	int n = input.size();
 	if (input[n - 1] != ')' && !is_digit(input[n - 1])) {
@@ -49,42 +85,23 @@ string infix_to_postfix(string &input) {
 	}
 
 	vector<string> res;
-	string token;
+	vector<string> tokens = tokenize(input);
 	vector<string> stack;
 
-	for (int i = 0; i < n; i++) {
-		if (input[i] == ' ') {
-			if (token.size()) {
-				res.push_back(token);
-				token = "";
-			}
-			continue;
-		}
+	for (string &token : tokens) {
 
-		if (is_digit(input[i])) {
-			token += input[i];
-			continue;
-		}
 
-		if (token.size()) {
+		if (is_digit(token[0])) {
 			res.push_back(token);
-			token = "";
-		}
-
-		string op1;
-		op1 += input[i];
-		if (input[i] == input[i + 1]) {
-			op1 += input[i];
-			i++;
-		}
-		// cout << op1 << '\n';
-
-		if (op1 == "(") {
-			stack.push_back(op1);
 			continue;
 		}
 
-		if (op1 == ")") {
+		if (token == "(") {
+			stack.push_back(token);
+			continue;
+		}
+
+		if (token == ")") {
 			while (stack[stack.size() - 1] != "(") {
 				res.push_back(stack[stack.size() - 1]);
 				stack.pop_back();
@@ -97,19 +114,15 @@ string infix_to_postfix(string &input) {
 			string op2 = stack[stack.size() - 1];
 			if (op2 == "(")
 				break;
-			// cout << op2 << endl;
-			if (operator_precedence[op2] > operator_precedence[op1])
+			if (operator_precedence[op2] > operator_precedence[token])
 				break;
-			if (operator_precedence[op2] == operator_precedence[op1] && right_assosiative.contains(op1))
+			if (operator_precedence[op2] == operator_precedence[token] && right_assosiative.contains(token))
 				break;
 			res.push_back(op2);
 			stack.pop_back();
 		}
-		stack.push_back(op1);
+		stack.push_back(token);
 	}
-
-	if (token.size())
-		res.push_back(token);
 
 	while (stack.size()) {
 		res.push_back(stack[stack.size() - 1]);

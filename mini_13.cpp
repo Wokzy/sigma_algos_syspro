@@ -77,8 +77,9 @@ int solution(vector<int> &arr, int k) {
 signed main(void) {
 
 	// vector<int> arr = {1, 2, 3, 4, 4, 6, 7, 8, 9, 10};
-	vector<int> arr = {7, 9, 2, 10, 4, 4, 3, 8, 6, 1};
+	vector<int> arr = {7, 9, 2, 10, 4, 4, 3, 8, 6, 1, 5};
 	int n = arr.size();
+	cout << n << '\n';
 
 	// int n;
 	// cin >> n;
@@ -87,6 +88,12 @@ signed main(void) {
 	// 	cin >> c;
 
 	cout << solution(arr, arr.size() >> 1) << '\n';
+	sort(arr.begin(), arr.end());
+
+	cout << arr[0];
+	for (int i = 1; i < n; i++)
+		cout << ' ' << arr[i];
+	cout << endl;
 	// if (n & 1)
 	// 	cout << solution(arr, arr.size() >> 1) << '\n';
 	// else
