@@ -51,7 +51,7 @@ public:
 	}
 };
 
-// BSW
+// DSW
 class Solution { // https://leetcode.com/problems/balance-a-binary-search-tree/submissions/1586068202
 public:
 
@@ -93,10 +93,10 @@ public:
 	TreeNode* balanceBST(TreeNode *root) {
 		TreeNode *root2 = new TreeNode(0, nullptr, root);
 
-		auto cnt = flatten(root2);
-		int m = (1 << (int)log2(cnt + 1)) - 1;
+		int counter = flatten(root2);
+		int m = (1 << (int)log2(counter + 1)) - 1;
 
-		compress(root2, cnt - m);
+		compress(root2, counter - m);
 		for (m >>= 1; m > 0; m >>= 1)
 			compress(root2, m);
 
