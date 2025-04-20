@@ -156,9 +156,11 @@ private:
 	}
 
 public:
-	BloomFilter(size_t elements_quantity) {
+	BloomFilter(size_t elements_quantity, double proba) {
 		n = elements_quantity;
-		m = 1 << (((size_t)log10(n) << 2) + 4); // false-positive probability is about 1e-10
+		// m = 1 << (((size_t)log10(n) << 2) + 4); // false-positive probability is about .001
+		// k = -log2(proba);
+		m = (size_t)((double)(n) * (-log2(proba) / 0.6931)); //(size_t)(k*n / 0.6931);
 		filter = vector<bool>(m, false);
 		k = (size_t)(0.6931*(m/n));
 		cout << m << ' ' << n << ' ' << k << endl;
@@ -179,18 +181,32 @@ public:
 
 
 int main(void) {
-	BloomFilter bf(3);
+	BloomFilter bf(100000, 0.05);
 
-	unsigned char addr1[4] = {1, 1, 1, 1};
-	unsigned char addr2[4] = {8, 8, 8, 8};
-	unsigned char addr3[4] = {192, 168, 88, 1};
+	for (unsigned i = 0; i < 100000; i++) {
+		bf.insert((unsigned char *)&i);
+	}
 
-	bf.insert(addr1);
-	bf.insert(addr3);
+	int cnt = 0;
 
-	cout << bf.contains(addr1) << endl;
-	cout << bf.contains(addr2) << endl;
-	cout << bf.contains(addr3) << endl;
+	for (unsigned i = 100001; i <= 200000; i++) {
+		if (bf.contains((unsigned char *)&i)) {
+			cnt++;
+		}
+	}
+
+	cout << "false-positive: " << cnt << endl;
+
+	// unsigned char addr1[4] = {1, 1, 1, 1};
+	// unsigned char addr2[4] = {8, 8, 8, 8};
+	// unsigned char addr3[4] = {192, 168, 88, 1};
+
+	// bf.insert(addr1);
+	// bf.insert(addr3);
+
+	// cout << bf.contains(addr1) << endl;
+	// cout << bf.contains(addr2) << endl;
+	// cout << bf.contains(addr3) << endl;
 	return 0;
 }
 
