@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <utility>
 #include <iostream>
+#include <memory>
 
 
 using namespace std;
@@ -11,17 +12,13 @@ struct Treap {
 	int sum;
 	int size;
 	int value;
-	Treap *right;
-	Treap *left;
+	shared_ptr<Treap> right;
+	shared_ptr<Treap> left;
 
 	Treap(int p, int val) : sum(val), value(val), priority(p), size(1), right(nullptr), left(nullptr) {}
-	~Treap() {
-		if (right) delete right;
-		if (left) delete left;
-	}
 };
 
-void update(Treap *x) {
+void update(shared_ptr<Treap> x) {
 	x->size = 1;
 	x->sum = x->value;
 	if (x->left) {
@@ -35,7 +32,7 @@ void update(Treap *x) {
 }
 
 
-Treap *merge(Treap *x, Treap *y) {
+shared_ptr<Treap> merge(shared_ptr<Treap> x, shared_ptr<Treap> y) {
 	if (x == nullptr) return y;
 	if (y == nullptr) return x;
 
@@ -53,7 +50,7 @@ Treap *merge(Treap *x, Treap *y) {
 }
 
 
-pair<Treap *, Treap *> splitBySize(Treap *x, int k) {
+pair<shared_ptr<Treap> , shared_ptr<Treap> > splitBySize(shared_ptr<Treap> x, int k) {
 	if (x == nullptr) return {nullptr, nullptr};
 
 	int l_size = 0;
@@ -73,20 +70,20 @@ pair<Treap *, Treap *> splitBySize(Treap *x, int k) {
 }
 
 
-Treap *insert(Treap *x, int pos, int value) {
+shared_ptr<Treap> insert(shared_ptr<Treap> x, int pos, int value) {
 	auto l_r = splitBySize(x, pos - 1);
-	auto y = new Treap(rand(), value);
+	auto y = make_shared<Treap>(rand(), value);
 	return merge(merge(l_r.first, y), l_r.second);
 }
 
-Treap *erase(Treap *x, int pos, int count) {
+shared_ptr<Treap> erase(shared_ptr<Treap> x, int pos, int count) {
 	auto l_r = splitBySize(x, pos - 1);
 	auto rl_rr = splitBySize(l_r.second, count);
 
 	return merge(l_r.first, rl_rr.second);
 }
 
-int sum(Treap *x, int lq, int rq) {
+int sum(shared_ptr<Treap> x, int lq, int rq) {
 	auto l_r = splitBySize(x, lq - 1);
 	auto rl_rr = splitBySize(l_r.second, rq - lq + 1);
 
@@ -124,6 +121,6 @@ int main(void) {
 	cout << sum(test, 1, 10) << '\n'; // 40
 	cout << sum(test, 2, 2) << '\n'; // 14
 
-	delete test;
+	// delete test;
 	return 0;
 }
