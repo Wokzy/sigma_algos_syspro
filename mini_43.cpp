@@ -2,7 +2,6 @@
 #include <vector>
 #include <algorithm>
 #include <utility>
-#include <memory>
 
 using namespace std;
 
@@ -36,6 +35,10 @@ struct SegTree {
 			return 0;
 
 		return l->sum(lq, rq) + r->sum(lq, rq);
+	}
+
+	~SegTree() {
+		if (l) delete l, r;
 	}
 };
 
