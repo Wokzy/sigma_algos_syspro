@@ -17,6 +17,8 @@ vector<vector<int>> generate_graph(int n) {
 		}
 	}
 
+	cout << "generated" << endl;
+
 	return res;
 }
 
@@ -58,12 +60,12 @@ int dp_solution(vector<vector<int>> &graph) {
 
 	dp[0][1] = 0;
 
-	for (int m = 1; m <= n; m++) {
-		for (size_t i = 0; i < ((size_t)(1) << (n - 1)); i++) {
-			if (__builtin_popcount(i) >= m) continue;
-			size_t s = (i << 1) | 1;
-			for (int v = 1; v < n; v++) {
-				if ((s & (1 << v)) == 0) continue;
+	for (int m = 1; m < n; m++) {
+		for (size_t i = 0; i < ((size_t)(1) << (n - 1)); i++) { // тк 1 всегда в s, то пробежимся по [2, 3, ..., n-1, n]
+			if (__builtin_popcount(i) != m) continue;
+			size_t s = (i << 1) | 1; // включаем 1 в s, тк она всегда должна там быть
+			for (int v = 1; v < n; v++) { // итерируемся по элементам мн-ва S пропуская 1
+				if ((s & (1 << v)) == 0) continue; // если v не в s, continue
 
 				int min_val = VERYBIG;
 				for (int w = 0; w < n; w++) {
@@ -88,13 +90,11 @@ int dp_solution(vector<vector<int>> &graph) {
 
 signed main(void) {
 
-	int n = 20; // 7s 4 dp
+	int n = 7; // 7s for dp
 	auto graph = generate_graph(n);
 	// vector<vector<int>> graph = {{0, 1, 2, 3}, {1, 0, 6, 4}, {2, 6, 0, 5}, {3, 4, 5, 0}};
 
-	cout << "generated" << endl;
-
-	vector<bool> visited(n, false);
+	// vector<bool> visited(n, false);
 	// cout << native_solution(graph, 0, visited, 0) << '\n';
 	cout << dp_solution(graph) << '\n';
 

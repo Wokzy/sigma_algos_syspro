@@ -26,7 +26,7 @@ def test_unionfind_2():
 
 	assert mini_33.union_find_solution(deadlines, weights) == mini_33.naive_for_test(deadlines, weights) == 0
 
-@pytest.mark.parametrize("size", [10, 100, 1000])
+@pytest.mark.parametrize("size", [10, 100, 1000, 65536])
 def test_unionfind_random(size: int):
 	deadlines = [random.randint(1, size) for i in range(size)]
 	weights = [random.randint(0, 1<<32) for i in range(size)]
