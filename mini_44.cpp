@@ -20,9 +20,6 @@ private:
 		Node(shared_ptr<Node> next, int value) : next(next), value(value), element(nullptr) {}
 		Node(shared_ptr<Node> next, int value, shared_ptr<Node> element) : next(next), value(value), element(element) {}
 		Node(shared_ptr<Node> next, shared_ptr<Node> element) : next(next), value(0), element(element) {}
-		// ~Node() {
-		// 	delete next;
-		// }
 	};
 
 	struct VersionInfo {
@@ -36,12 +33,6 @@ private:
 
 		VersionInfo(int size, shared_ptr<Node> tail, shared_ptr<Node> head) : size(size), head(head), tail(tail), ready_list(nullptr), building_list(nullptr) {}
 		VersionInfo(int size, shared_ptr<Node> tail, shared_ptr<Node> head, shared_ptr<Node> ready_list, shared_ptr<Node> building_list) : size(size), head(head), tail(tail), ready_list(ready_list), building_list(building_list) {}
-		// ~VersionInfo() {
-		// 	delete head;
-		// 	delete tail;
-		// 	delete ready_list;
-		// 	delete building_list;
-		// }
 
 		bool _check_ready_list() {
 			if (building_list->element->next == head) {
@@ -81,8 +72,6 @@ public:
 	void push(int version, int value) {
 		auto old_ = versions[version];
 
-		// cout << value << ": ";
-
 		auto new_ = make_shared<VersionInfo>(old_->size + 1, make_shared<Node>(old_->tail, value, nullptr), old_->head, old_->ready_list, old_->building_list);
 		if (old_->size == 0) {
 			new_->head = new_->tail;
@@ -90,7 +79,6 @@ public:
 
 		new_->ready_list_size = old_->ready_list_size;
 		new_->building_list_size = old_->building_list_size;
-		// cout << new_->tail << '\n';
 		new_->maybe_build_list();
 
 		versions.push_back(new_);
@@ -119,8 +107,6 @@ public:
 			versions.push_back(new_);
 			return old_->head->value;
 		}
-
-		// cout << old_->ready_list << ' ' << old_->building_list_size << ' ' << old_->size << '\n';
 
 		auto new_ = make_shared<VersionInfo>(old_->size - 1, old_->tail, old_->ready_list->element, old_->ready_list->next, old_->building_list);
 		new_->ready_list_size = old_->ready_list_size - 1;
